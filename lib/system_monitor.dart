@@ -6,7 +6,10 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class SystemMonitor {
   final String _host;
   final int _port;
-  late WebSocketChannel _channel;
+  late WebSocketChannel _realtimeChannel;
+  late WebSocketChannel _requestChannel;
+
+  Completer completer = Completer();
 
   SystemMonitor({String host = 'localhost', int port = 8765})
       : _host = host,
@@ -14,12 +17,18 @@ class SystemMonitor {
 
   Future<void> connect() async {
     final url = 'ws://$_host:$_port';
-    _channel = WebSocketChannel.connect(Uri.parse(url));
+    _realtimeChannel = WebSocketChannel.connect(Uri.parse(url));
+    _requestChannel = WebSocketChannel.connect(Uri.parse(url));
+    
+    _requestChannel.stream.listen((event) {
+      completer.complete(event);
+    });
   }
 
   Future<double> getRamUsage() async {
-    _channel.sink.add('get_ram');
-    final response = await _channel.stream.first;
+    completer = Completer();
+    _requestChannel.sink.add('get_ram');
+    final response = await completer.future;
     if (response.startsWith('ram,')) {
       final ramUsedGB = double.tryParse(response.substring(4));
       return ramUsedGB ?? 0;
@@ -28,8 +37,9 @@ class SystemMonitor {
   }
 
   Future<double> getCpuUsage() async {
-    _channel.sink.add('get_cpu');
-    final response = await _channel.stream.first;
+    completer = Completer();
+    _requestChannel.sink.add('get_cpu');
+    final response = await completer.future;
     if (response.startsWith('cpu,')) {
       final cpuPercentage = double.tryParse(response.substring(4));
       return cpuPercentage ?? 0;
@@ -38,8 +48,8 @@ class SystemMonitor {
   }
 
   Stream<Map<String, double>> startRealtimeMonitoring() async* {
-    _channel.sink.add('realtime');
-    await for (var message in _channel.stream) {
+    _realtimeChannel.sink.add('realtime');
+    await for (var message in _realtimeChannel.stream) {
       if (message.contains(',')) {
         final data = message.split(',');
         final ramUsedGB = double.tryParse(data[0]);
@@ -53,6 +63,7 @@ class SystemMonitor {
   }
 
   void close() {
-    _channel.sink.close();
+    _realtimeChannel.sink.close();
+    _requestChannel.sink.close();
   }
 }
