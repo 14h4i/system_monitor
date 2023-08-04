@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:system_monitor/system_monitor.dart';
 
-void main() {
+void main() async {
+  await SystemMonitor.instance.init();
   runApp(const MyApp());
 }
 
@@ -13,12 +14,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final SystemMonitor _systemMonitor = SystemMonitor();
+  final _systemMonitor = SystemMonitor.instance;
 
   @override
   void initState() {
     super.initState();
-    _systemMonitor.connect();
   }
 
   @override
