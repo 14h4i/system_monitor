@@ -11,15 +11,22 @@ class SystemMonitor {
 
   Completer completer = Completer();
 
-  SystemMonitor({String host = 'localhost', int port = 8765})
+  SystemMonitor._({String host = 'localhost', int port = 8765})
       : _host = host,
         _port = port;
 
-  Future<void> connect() async {
+  static SystemMonitor? _instance;
+
+  static SystemMonitor get instance {
+    _instance ??= SystemMonitor._();
+    return _instance!;
+  }
+
+  Future<void> init() async {
     final url = 'ws://$_host:$_port';
     _realtimeChannel = WebSocketChannel.connect(Uri.parse(url));
     _requestChannel = WebSocketChannel.connect(Uri.parse(url));
-    
+
     _requestChannel.stream.listen((event) {
       completer.complete(event);
     });
