@@ -109,4 +109,4 @@ For a complete example, check out the `example` folder in this repository.
 
 ## License
 
-This package is licensed under the MIT License - see the LICENSE file for details.
+This package is licensed under the MIT License - see the [LICENSE](https://github.com/14h4i/system_monitor/blob/main/LICENSE) file for details.
