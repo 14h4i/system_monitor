@@ -40,14 +40,15 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               ElevatedButton(
                 onPressed: () async {
-                  double ramUsedGB = await _systemMonitor.getRamUsage();
+                  final ramUsedGB = await _systemMonitor.getRamUsage();
                   print("RAM Usage: $ramUsedGB GB");
                 },
                 child: const Text('Get RAM Usage'),
               ),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  double cpuPercentage = await _systemMonitor.getCpuUsage();
+                  final cpuPercentage = await _systemMonitor.getCpuUsage();
                   print("CPU Usage: $cpuPercentage %");
                 },
                 child: const Text('Get CPU Usage'),
