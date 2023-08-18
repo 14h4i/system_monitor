@@ -1,11 +1,7 @@
 library system_monitor;
 
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:path/path.dart' as path;
 
 class SystemMonitor {
   final String _host;
@@ -27,8 +23,6 @@ class SystemMonitor {
   }
 
   Future<void> init() async {
-    await runServer();
-
     final url = 'ws://$_host:$_port';
     _realtimeChannel = WebSocketChannel.connect(Uri.parse(url));
     _requestChannel = WebSocketChannel.connect(Uri.parse(url));
@@ -75,64 +69,8 @@ class SystemMonitor {
     }
   }
 
-  Future<bool> isServerRunning() async {
-    try {
-      final url = 'ws://$_host:$_port';
-      final channel = WebSocketChannel.connect(Uri.parse(url));
-      await channel.sink.close();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<void> runServer() async {
-    final String currentDirectory = Directory.current.path;
-    final String serverFilePath = path.join(currentDirectory, '../server.py');
-
-    if (await File(serverFilePath).exists()) {
-      final bool isRunning = await isServerRunning();
-
-      if (isRunning) {
-        log('Server is already running on port 8765.');
-      } else {
-        log('Running server.py...');
-        Process.start('python', [serverFilePath]).then((process) {
-          process.stdout.transform(utf8.decoder).listen((data) {
-            log('server.py: $data');
-          });
-          process.stderr.transform(utf8.decoder).listen((data) {
-            log('server.py error: $data');
-          });
-        });
-      }
-    } else {
-      log('server.py not found.');
-    }
-  }
-
-  Future<void> stopServer() async {
-    final bool isRunning = await isServerRunning();
-
-    if (isRunning) {
-      log('Stopping server...');
-
-      Process.start('pkill', ['-f', 'python server.py']).then((process) {
-        process.stdout.transform(utf8.decoder).listen((data) {
-          log('Stop server output: $data');
-        });
-        process.stderr.transform(utf8.decoder).listen((data) {
-          log('Stop server error: $data');
-        });
-      });
-    } else {
-      log('Server is not running.');
-    }
-  }
-
   void close() {
     _realtimeChannel.sink.close();
     _requestChannel.sink.close();
-    stopServer();
   }
 }
