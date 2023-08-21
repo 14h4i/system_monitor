@@ -2,7 +2,10 @@
 
 [![pub package](https://img.shields.io/pub/v/system_monitor.svg)](https://pub.dev/packages/system_monitor)
 
-A Flutter package to monitor system CPU and RAM usage using Python backend.
+A Flutter package to monitor system CPU and RAM usage using a WebSocket connection to a Python backend. This package works in conjunction with the `system_monitor_cli` package, which provides a command-line interface for managing the Python server.
+
+## Using system_monitor_cli
+This package can be used in conjunction with the [system_monitor_cli](https://pub.dev/packages/system_monitor_cli) package, which provides a command-line interface for managing the Python server. For more details on how to use the CLI tool, please refer to the [system_monitor_cli README](https://pub.dev/packages/system_monitor_cli).
 
 ## Getting Started
 
@@ -52,11 +55,11 @@ import 'package:system_monitor/system_monitor.dart';
 
 Initialize the monitor
 
-Before using the package, you need to initialize the monitor by specifying the default `host` and `port` of the Python backend:
+Before using the package, you need to initialize the monitor by creating an instance of `SystemMonitor` and calling its `init()` method:
 
 ```dart
-SystemMonitor monitor = SystemMonitor(); // Default host 'localhost' and port 8765
-await monitor.connect();
+SystemMonitor monitor = SystemMonitor();
+await monitor.init();
 ```
 
 ### Get RAM Usage
