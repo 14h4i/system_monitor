@@ -42,7 +42,7 @@ To use this package, add `system_monitor` as a dependency in your `pubspec.yaml`
 dependencies:
   flutter:
     sdk: flutter
-  system_monitor: ^1.0.0
+  system_monitor: ^1.0.1
 ```
 
 ### Usage
