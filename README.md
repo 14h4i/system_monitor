@@ -58,7 +58,7 @@ Initialize the monitor
 Before using the package, you need to initialize the monitor by creating an instance of `SystemMonitor` and calling its `init()` method:
 
 ```dart
-SystemMonitor monitor = SystemMonitor();
+SystemMonitor monitor = SystemMonitor.instance;
 await monitor.init();
 ```
 
@@ -67,6 +67,7 @@ await monitor.init();
 To get the current RAM usage in GB, you can call the `getRamUsage()` method:
 
 ```dart
+SystemMonitor monitor = SystemMonitor.instance;
 double ramUsage = await monitor.getRamUsage();
 print('RAM Usage: $ramUsage GB');
 ```
@@ -76,6 +77,7 @@ print('RAM Usage: $ramUsage GB');
 To get the current CPU usage in percentage, you can call the `getCpuUsage()` method:
 
 ```dart
+SystemMonitor monitor = SystemMonitor.instance;
 double cpuUsage = await monitor.getCpuUsage();
 print('CPU Usage: $cpuUsage%');
 ```
@@ -85,6 +87,7 @@ print('CPU Usage: $cpuUsage%');
 You can also start realtime monitoring of CPU and RAM usage using the `startRealtimeMonitoring()` method:
 
 ```dart
+SystemMonitor monitor = SystemMonitor.instance;
 StreamSubscription<Map<String, double>> subscription = monitor.startRealtimeMonitoring().listen((data) {
   double ramUsage = data['ram'];
   double cpuUsage = data['cpu'];
@@ -103,6 +106,7 @@ subscription.cancel();
 When you are done using the monitor, make sure to close the connection to the Python backend:
 
 ```dart
+SystemMonitor monitor = SystemMonitor.instance;
 monitor.close();
 ```
 
