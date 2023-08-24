@@ -23,4 +23,11 @@ example:
   path: example
 
 flutter:
-  uses-material-design: true
+  plugin:
+    platforms:
+      linux:
+        pluginClass: SystemMonitorLinux
+      windows:
+        pluginClass: SystemMonitorWindows
+      macos:
+        pluginClass: SystemMonitorMacos
