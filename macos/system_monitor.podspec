@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'system_monitor'
-  s.version          = '1.0.4'
+  s.version          = '1.0.5'
   s.summary          = 'A package to monitor system CPU and RAM usage.'
   s.description      = <<-DESC
                        A package to monitor system CPU and RAM usage.
@@ -14,6 +14,4 @@ Pod::Spec.new do |s|
   s.source_files = 'system_monitor/**/*.{h,m,swift}'
   s.exclude_files = 'system_monitor/Exclude'
   s.resources = 'system_monitor/Resources/**/*'
-
-  s.dependency 'system_monitor', '1.0.4'
 end
