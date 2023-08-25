@@ -23,3 +23,7 @@ All notable changes to this project will be documented in this file.
 ## 1.0.3 - 2023-08-24
 
 - Add system_monitor.podspec
+
+## 1.0.4 - 2023-08-25
+
+- Add system_monitor.podspec

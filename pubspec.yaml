@@ -1,6 +1,6 @@
 name: system_monitor
 description: A package to monitor system CPU and RAM usage.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/14h4i/system_monitor
 repository: https://github.com/14h4i/system_monitor
 
